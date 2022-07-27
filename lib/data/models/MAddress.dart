@@ -8,6 +8,9 @@ part 'MAddress.g.dart';
 
 @freezed
 class MAddress with _$MAddress {
+
+  const MAddress._();
+
   const factory MAddress({
     String? street,
     String? suite,
@@ -15,6 +18,10 @@ class MAddress with _$MAddress {
     String? zipcode,
     MGeo? geo
   }) = _MAddress;
+
+  String getGeo(){
+    return "${city} ${street} ${suite}";
+  }
 
   factory MAddress.fromJson(Map<String, dynamic> json) => _$MAddressFromJson(json);
 }

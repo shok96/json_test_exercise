@@ -4,9 +4,19 @@ import 'package:json_test_exercise/data/datasource/network/net.dart';
 import 'package:json_test_exercise/data/datasource/network/net_controller.dart';
 import 'package:json_test_exercise/data/repository/RepositoryImpl.dart';
 import 'package:json_test_exercise/domain/repository/repository.dart';
+import 'package:json_test_exercise/domain/usecases/impl/UCCommentImpl.dart';
+import 'package:json_test_exercise/domain/usecases/impl/UCPostImpl.dart';
+import 'package:json_test_exercise/domain/usecases/impl/UCUserImpl.dart';
+import 'package:json_test_exercise/domain/usecases/intf/UCComment.dart';
+import 'package:json_test_exercise/domain/usecases/intf/UCPost.dart';
+import 'package:json_test_exercise/domain/usecases/intf/UCUser.dart';
 import 'package:json_test_exercise/presentation/bloc/auth/auth_cubit.dart';
+import 'package:json_test_exercise/presentation/bloc/comment/bloc_comment_bloc.dart';
 import 'package:json_test_exercise/presentation/bloc/nav_bottom/cubit_bottom_nav.dart';
 import 'package:dio/dio.dart' hide Headers;
+import 'package:json_test_exercise/presentation/bloc/post/bloc_post_bloc.dart';
+
+import 'presentation/bloc/user/bloc_user_bloc.dart';
 
 final sl = GetIt.instance;
 
@@ -15,7 +25,9 @@ Future<void> init() async{
   sl.registerFactory(() => AuthCubit());
   sl.registerFactory(() => CubitBottomNav());
 
- //  sl.registerFactory(() => CubitFormulsSub(sl()));
+  sl.registerFactory(() => BlocUser(sl()));
+  sl.registerFactory(() => BlocPost(sl()));
+  sl.registerFactory(() => BlocComment(sl()));
  //  sl.registerFactory(() => CubitFormula(sl()));
  //  sl.registerFactory(() => CubitTableList(sl()));
  //  sl.registerFactory(() => CubitTable(sl()));
@@ -25,7 +37,9 @@ Future<void> init() async{
  //
  //  // sl.registerLazySingleton<NetworkInfo>(() => NetworkInfoImpl(connectionChecker: sl()));
  //
- //  sl.registerLazySingleton(() => UCFormuls(sl()));
+  sl.registerLazySingleton<UCUser>(() => UCUserImpl(sl()));
+  sl.registerLazySingleton<UCPost>(() => UCPostImpl(sl()));
+  sl.registerLazySingleton<UCComment>(() => UCCommentImpl(sl()));
  //  sl.registerLazySingleton(() => UCFacts(sl()));
  //  sl.registerLazySingleton(() => UCTables(sl()));
  //  sl.registerLazySingleton(() => UCDB(sl()));

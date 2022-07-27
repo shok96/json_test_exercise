@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:json_test_exercise/data/models/MCompany.dart';
 
 import 'MAddress.dart';
 
@@ -15,7 +16,8 @@ class MUser with _$MUser {
     String? phone,
     String? website,
     String? username,
-    MAddress? address
+    MAddress? address,
+    MCompany? company
   }) = _MUser;
 
   factory MUser.fromJson(Map<String, dynamic> json) => _$MUserFromJson(json);

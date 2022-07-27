@@ -1,3 +1,5 @@
+import 'package:json_test_exercise/data/models/MComment.dart';
+import 'package:json_test_exercise/data/models/MPost.dart';
 import 'package:json_test_exercise/data/models/MUser.dart';
 
 import 'net_controller.dart';
@@ -7,6 +9,10 @@ import 'responseModel/MTaskResult.dart';
 abstract class RemoteDataSource{
 
   Future<MTaskResult<List<MUser>>> getUsers();
+  Future<MTaskResult<MUser>> getUserById(int id);
+  Future<MTaskResult<List<MPost>>> getPostByUserId(int id);
+  Future<MTaskResult<List<MComment>>> getCommentsByPostId(int id);
+  Future<MTaskResult<MComment>> createComment(MComment data);
   // Future<MTaskResult<List<MSmena>>> getSmens();
   // Future<MTaskResult<List<MSmena>>> getSmena(int id);
   // Future<MTaskResult<List<MBlog>>> getBlogs();
@@ -86,6 +92,34 @@ class RemoteDataSourceImpl implements RemoteDataSource{
     return await _net.asyncResult<List<MUser>>(
             () => _net.api.getUsers(),
             (data) => (data as List).map((i) => MUser.fromJson(i)).toList());
+  }
+
+  @override
+  Future<MTaskResult<MUser>> getUserById(int id) async{
+    return await _net.asyncResult<MUser>(
+            () => _net.api.getUserById(id),
+            (data) =>  MUser.fromJson(data));
+  }
+
+  @override
+  Future<MTaskResult<List<MPost>>> getPostByUserId(int id) async{
+    return await _net.asyncResult<List<MPost>>(
+            () => _net.api.getPostByUserId(id),
+            (data) =>  (data as List).map((i) => MPost.fromJson(i)).toList());
+  }
+
+  @override
+  Future<MTaskResult<List<MComment>>> getCommentsByPostId(int id) async{
+    return await _net.asyncResult<List<MComment>>(
+            () => _net.api.getCommentsByPostId(id),
+            (data) =>  (data as List).map((i) => MComment.fromJson(i)).toList());
+  }
+
+  @override
+  Future<MTaskResult<MComment>> createComment(MComment data) async{
+    return await _net.asyncResult<MComment>(
+            () => _net.api.createComments(data),
+            (data) =>  MComment.fromJson(data));
   }
   //
   // @override

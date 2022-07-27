@@ -3,11 +3,17 @@
 import 'package:json_test_exercise/core/exception/CacheException.dart';
 import 'package:json_test_exercise/data/datasource/network/RemoteDataSource.dart';
 import 'package:json_test_exercise/data/datasource/network/responseModel/MTaskResult.dart';
+import 'package:json_test_exercise/data/models/MComment.dart';
+import 'package:json_test_exercise/data/models/MPost.dart';
 import 'package:json_test_exercise/data/models/MUser.dart';
 import 'package:json_test_exercise/domain/repository/repository.dart';
 
 enum mode {
-  Users
+  Users,
+  UserById,
+  PostByUserId,
+  CommetnsByPostId,
+  CreateComment,
 }
 
 class RepositoryImpl implements Repository {
@@ -79,6 +85,28 @@ class RepositoryImpl implements Repository {
   Future<MTaskResult<List<MUser>>> getUsers() {
     return _getRepository<List<MUser>>(mode.Users);
   }
+
+  @override
+  Future<MTaskResult<MUser>> getUserById(int id) {
+    return _getRepository<MUser>(mode.UserById, id: id);
+  }
+
+  @override
+  Future<MTaskResult<List<MPost>>> getPostByUserId(int id) {
+    return _getRepository<List<MPost>>(mode.PostByUserId, id: id);
+  }
+
+  @override
+  Future<MTaskResult<List<MComment>>> getCommentsByPostId(int id) {
+    return _getRepository<List<MComment>>(mode.CommetnsByPostId, id: id);
+  }
+
+  @override
+  Future<MTaskResult<MComment>> createComment(MComment data) {
+    return _getRepositoryWithParams<MComment, MComment>(mode.CreateComment, params: data);
+  }
+
+
 
   // @override
   // Future<MTaskResult<DBServer>> getDB() {
@@ -214,6 +242,22 @@ class RepositoryImpl implements Repository {
         {
           return remoteDataSource.getUsers();
         }
+      case mode.UserById:
+        {
+          return remoteDataSource.getUserById(id);
+        }
+      case mode.PostByUserId:
+        {
+          return remoteDataSource.getPostByUserId(id);
+        }
+      case mode.CommetnsByPostId:
+        {
+          return remoteDataSource.getCommentsByPostId(id);
+        }
+      case mode.CreateComment:
+        {
+          return remoteDataSource.createComment(params as MComment);
+        }
       // case mode.History:
       //   {
       //     return remoteDataSource.getHistory();
@@ -333,8 +377,5 @@ class RepositoryImpl implements Repository {
         }
     }
   }
-
-
-
 
 }
