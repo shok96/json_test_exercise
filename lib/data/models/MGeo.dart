@@ -7,8 +7,8 @@ part 'MGeo.g.dart';
 @freezed
 class MGeo with _$MGeo {
   const factory MGeo({
-    double? lat,
-    double? lng,
+    String? lat,
+    String? lng,
   }) = _MGeo;
 
   factory MGeo.fromJson(Map<String, dynamic> json) => _$MGeoFromJson(json);

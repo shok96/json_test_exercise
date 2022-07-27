@@ -1,21 +1,26 @@
-// import 'package:retrofit/retrofit.dart';
-//
-// import 'package:dio/dio.dart' hide Headers;
-//
-// part 'net.g.dart';
-//
-// @RestApi(baseUrl: "http://app.kdcsozvezdie.ru/api/")
-// abstract class Api{
-//
-//   factory Api(Dio dio, {String baseUrl}) = _Api;
-//
-//   @GET("projects/")
-//   Future<List<MSmena>?> getSmens();
-//
-//   @GET("project/{id}/")
-//   Future<List<MSmena>?> getSmena(@Path("id") int id);
-//
-//   @POST("users/")
-//   Future<MResponseAuthCreate?> createUser(@Body() MRegAuth regAuth);
-//
-// }
+import 'package:json_test_exercise/data/models/MPost.dart';
+import 'package:json_test_exercise/data/models/MUser.dart';
+import 'package:retrofit/retrofit.dart';
+
+import 'package:dio/dio.dart' hide Headers;
+
+part 'net.g.dart';
+
+@RestApi(baseUrl: "https://jsonplaceholder.typicode.com/")
+abstract class Api{
+
+  factory Api(Dio dio, {String baseUrl}) = _Api;
+
+  @GET("users/")
+  Future<List<MUser>?> getUsers();
+
+  @GET("posts/{id}/")
+  Future<MPost?> getPostById(@Path("id") int id);
+
+  @GET("posts/")
+  Future<List<MPost>?> getPostByUserId(@Query("userId") int id);
+
+  // @POST("users/")
+  // Future<MResponseAuthCreate?> createUser(@Body() MRegAuth regAuth);
+
+}

@@ -68,7 +68,7 @@ part 'MTaskResult.freezed.dart';
 part 'MTaskResult.g.dart';
 
 @Freezed(genericArgumentFactories: true)
-class MTaskResult<T> with _$MTaskResult {
+class MTaskResult<T> with _$MTaskResult<T> {
   const MTaskResult._();
 
   const factory MTaskResult(
@@ -78,11 +78,12 @@ class MTaskResult<T> with _$MTaskResult {
       Map<String, dynamic>? json_data,
       T? body}) = _MTaskResult;
 
-    factory MTaskResult.createBlank(T data) = _MTaskResultCreateBlank;
+    factory MTaskResult.createBlank(T data, bool isSuccessfull) => MTaskResult<T>(isSuccessfull: isSuccessfull, body: data);
 
-    factory MTaskResult.createFailure({@Default("null blank") String? error}) = _MTaskResultCreateFailure;
+    factory MTaskResult.createFailure({@Default("null blank") String? error}) => MTaskResult<T>(isSuccessfull: false, error: error);
 
   factory MTaskResult.fromJson(
-          Map<String, dynamic> json, T Function(Object?) fromJsonT) =>
+      Map<String, dynamic> json, T Function(Object?) fromJsonT) =>
       _$MTaskResultFromJson<T>(json, fromJsonT);
+
 }
