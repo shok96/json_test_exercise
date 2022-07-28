@@ -1,4 +1,6 @@
+import 'package:json_test_exercise/data/models/MAlbums.dart';
 import 'package:json_test_exercise/data/models/MComment.dart';
+import 'package:json_test_exercise/data/models/MPhoto.dart';
 import 'package:json_test_exercise/data/models/MPost.dart';
 import 'package:json_test_exercise/data/models/MUser.dart';
 
@@ -12,6 +14,8 @@ abstract class RemoteDataSource{
   Future<MTaskResult<MUser>> getUserById(int id);
   Future<MTaskResult<List<MPost>>> getPostByUserId(int id);
   Future<MTaskResult<List<MComment>>> getCommentsByPostId(int id);
+  Future<MTaskResult<List<MAlbums>>> getAlbumsByUserId(int id);
+  Future<MTaskResult<List<MPhoto>>> getPhotosByAlbumId(int id);
   Future<MTaskResult<MComment>> createComment(MComment data);
   // Future<MTaskResult<List<MSmena>>> getSmens();
   // Future<MTaskResult<List<MSmena>>> getSmena(int id);
@@ -120,6 +124,20 @@ class RemoteDataSourceImpl implements RemoteDataSource{
     return await _net.asyncResult<MComment>(
             () => _net.api.createComments(data),
             (data) =>  MComment.fromJson(data));
+  }
+
+  @override
+  Future<MTaskResult<List<MAlbums>>> getAlbumsByUserId(int id) async{
+    return await _net.asyncResult<List<MAlbums>>(
+            () => _net.api.getAlbumsByUserId(id),
+            (data) =>  (data as List).map((i) => MAlbums.fromJson(i)).toList());
+  }
+
+  @override
+  Future<MTaskResult<List<MPhoto>>> getPhotosByAlbumId(int id) async{
+    return await _net.asyncResult<List<MPhoto>>(
+            () => _net.api.getPhotosByAlbumId(id),
+            (data) =>  (data as List).map((i) => MPhoto.fromJson(i)).toList());
   }
   //
   // @override

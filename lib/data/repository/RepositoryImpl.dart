@@ -3,7 +3,9 @@
 import 'package:json_test_exercise/core/exception/CacheException.dart';
 import 'package:json_test_exercise/data/datasource/network/RemoteDataSource.dart';
 import 'package:json_test_exercise/data/datasource/network/responseModel/MTaskResult.dart';
+import 'package:json_test_exercise/data/models/MAlbums.dart';
 import 'package:json_test_exercise/data/models/MComment.dart';
+import 'package:json_test_exercise/data/models/MPhoto.dart';
 import 'package:json_test_exercise/data/models/MPost.dart';
 import 'package:json_test_exercise/data/models/MUser.dart';
 import 'package:json_test_exercise/domain/repository/repository.dart';
@@ -14,6 +16,8 @@ enum mode {
   PostByUserId,
   CommetnsByPostId,
   CreateComment,
+  GetAlbumsByUserId,
+  GetPhotosByAlbumId,
 }
 
 class RepositoryImpl implements Repository {
@@ -106,6 +110,15 @@ class RepositoryImpl implements Repository {
     return _getRepositoryWithParams<MComment, MComment>(mode.CreateComment, params: data);
   }
 
+  @override
+  Future<MTaskResult<List<MAlbums>>> getAlbumsByUserId(int id) {
+    return _getRepository<List<MAlbums>>(mode.GetAlbumsByUserId, id: id);
+  }
+
+  @override
+  Future<MTaskResult<List<MPhoto>>> getPhotosByAlbumId(int id) {
+    return _getRepository<List<MPhoto>>(mode.GetPhotosByAlbumId, id: id);
+  }
 
 
   // @override
@@ -258,6 +271,15 @@ class RepositoryImpl implements Repository {
         {
           return remoteDataSource.createComment(params as MComment);
         }
+      case mode.GetAlbumsByUserId:
+        {
+          return remoteDataSource.getAlbumsByUserId(id);
+        }
+      case mode.GetPhotosByAlbumId:
+        {
+          return remoteDataSource.getPhotosByAlbumId(id);
+        }
+        
       // case mode.History:
       //   {
       //     return remoteDataSource.getHistory();
@@ -377,5 +399,8 @@ class RepositoryImpl implements Repository {
         }
     }
   }
+
+
+  
 
 }

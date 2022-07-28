@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:json_test_exercise/data/models/MAlbums.dart';
 import 'package:json_test_exercise/data/models/MPost.dart';
+import 'package:json_test_exercise/presentation/widgets/thumb_album.dart';
 import 'package:json_test_exercise/presentation/widgets/thumb_post.dart';
 
 class CardShortList<T> extends StatelessWidget {
@@ -33,6 +35,9 @@ class CardShortList<T> extends StatelessWidget {
                     itemBuilder: (context, index) {
                       if(data is List<MPost>){
                         return ThumbPost(mPost: data[index] as MPost);
+                      }
+                      else if(data is List<MAlbums>){
+                        return ThumbAlbum(mAlbum: data[index] as MAlbums);
                       }
                       else{
                         return SizedBox.shrink();

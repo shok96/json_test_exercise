@@ -1,5 +1,7 @@
 import 'package:json_test_exercise/data/datasource/network/responseModel/MTaskResult.dart';
+import 'package:json_test_exercise/data/models/MAlbums.dart';
 import 'package:json_test_exercise/data/models/MComment.dart';
+import 'package:json_test_exercise/data/models/MPhoto.dart';
 import 'package:json_test_exercise/data/models/MPost.dart';
 import 'package:json_test_exercise/data/models/MUser.dart';
 
@@ -9,6 +11,8 @@ abstract class Repository{
   Future<MTaskResult<List<MPost>>> getPostByUserId(int id);
   Future<MTaskResult<List<MComment>>> getCommentsByPostId(int id);
   Future<MTaskResult<MComment>> createComment(MComment data);
+  Future<MTaskResult<List<MAlbums>>> getAlbumsByUserId(int id);
+  Future<MTaskResult<List<MPhoto>>> getPhotosByAlbumId(int id);
   // Future<MTaskResult<List<MSmena>>> getSmens();
   // Future<MTaskResult<List<MSmena>>> getSmena(int id);
   // Future<MTaskResult<List<MBlog>>> getBlogs();

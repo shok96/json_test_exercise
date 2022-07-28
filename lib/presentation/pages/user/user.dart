@@ -3,11 +3,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:json_test_exercise/data/models/MUser.dart';
 import 'package:json_test_exercise/domain/usecases/intf/UCUser.dart';
+import 'package:json_test_exercise/presentation/bloc/album/bloc_album_bloc.dart';
+import 'package:json_test_exercise/presentation/bloc/album/bloc_album_event.dart';
+import 'package:json_test_exercise/presentation/bloc/album/bloc_album_state.dart';
 import 'package:json_test_exercise/presentation/bloc/post/bloc_post_bloc.dart';
 import 'package:json_test_exercise/presentation/bloc/post/bloc_post_event.dart';
 import 'package:json_test_exercise/presentation/bloc/post/bloc_post_state.dart';
 import 'package:json_test_exercise/presentation/bloc/user/bloc_user_bloc.dart';
 import 'package:json_test_exercise/presentation/bloc/user/bloc_user_state.dart';
+import 'package:json_test_exercise/presentation/pages/album/list_album.dart';
+import 'package:json_test_exercise/presentation/pages/post/list_post.dart';
 import 'package:json_test_exercise/presentation/widgets/bloc_proxy.dart';
 import 'package:json_test_exercise/di.dart' as di;
 import 'package:json_test_exercise/presentation/widgets/card_short_list.dart';
@@ -29,6 +34,7 @@ class User extends StatelessWidget {
         ),
         body: MultiBlocProvider(providers: [
           BlocProvider<BlocPost>(create: (context) => di.sl<BlocPost>()),
+          BlocProvider<BlocAlbum>(create: (context) => di.sl<BlocAlbum>()),
         ],
         child: _UserScreen(mUser),)
     );
@@ -50,6 +56,7 @@ class _UserScreenState extends State<_UserScreen> {
   @override
   void didChangeDependencies() {
     context.read<BlocPost>().add(BlocPostEvent.getPostById(widget.mUser.id ?? 0));
+    context.read<BlocAlbum>().add(BlocAlbumEvent.getAlbumById(widget.mUser.id ?? 0));
     super.didChangeDependencies();
   }
 
@@ -67,7 +74,20 @@ class _UserScreenState extends State<_UserScreen> {
                 padding: EdgeInsets.all(16.r),
                 child: CircularProgressIndicator(),
               ),
-                fetchedListPost: (data) => CardShortList(data: data.Post, more: (){}, title: "Posts",)
+                fetchedListPost: (data) => CardShortList(data: data.Post, more: (){
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => ListPost(posts: data.Post)));
+                }, title: "Posts",),
+              );
+            }),
+            BlocBuilder<BlocAlbum, BlocAlbumState>(builder: (context, state){
+              return state.maybeMap(orElse: () => Container(),
+                proceed: (_) => Padding(
+                  padding: EdgeInsets.all(16.r),
+                  child: CircularProgressIndicator(),
+                ),
+                fetchedListAlbum: (data) => CardShortList(data: data.Album, more: (){
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => ListAlbum(Albums: data.Album,)));
+                }, title: "Albums",),
               );
             }),
           ],
