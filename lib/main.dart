@@ -52,7 +52,6 @@ class MyApp extends StatelessWidget {
         home: MultiBlocProvider(
             providers: [
               BlocProvider<AuthCubit>(create: (context) => di.sl<AuthCubit>()),
-              BlocProvider<CubitBottomNav>(create: (context) => di.sl<CubitBottomNav>()),
             ],
             child: ScreenUtilInit(
                 designSize: Size(414, 896),

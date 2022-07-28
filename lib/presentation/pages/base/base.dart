@@ -5,6 +5,7 @@ import 'package:json_test_exercise/presentation/bloc/nav_bottom/cubit_bottom_nav
 import 'package:json_test_exercise/presentation/bloc/nav_bottom/cubit_bottom_nav_state.dart';
 import 'package:json_test_exercise/presentation/pages/home/home.dart';
 import 'package:collection/collection.dart';
+import 'package:json_test_exercise/presentation/widgets/bloc_proxy.dart';
 
 class TabNavigationItem {
   final Widget page;
@@ -38,15 +39,27 @@ List<TabNavigationItem> items(
 
     ];
 
-class Base extends StatefulWidget {
-
-  Base({Key? key}) : super(key: key);
+class Base extends StatelessWidget {
+  const Base({Key? key}) : super(key: key);
 
   @override
-  _BaseState createState() => _BaseState();
+  Widget build(BuildContext context) {
+    return  BlocProxy<CubitBottomNav>(
+            bloc: (context, bloc) => CubitBottomNav(),
+            child: _BaseScreen()
+    );
+  }
 }
 
-class _BaseState extends State<Base> {
+class _BaseScreen extends StatefulWidget {
+
+  _BaseScreen({Key? key}) : super(key: key);
+
+  @override
+  _BaseScreenState createState() => _BaseScreenState();
+}
+
+class _BaseScreenState extends State<_BaseScreen> {
 
   final PageController controller = PageController();
 

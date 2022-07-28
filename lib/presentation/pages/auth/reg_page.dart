@@ -12,6 +12,18 @@ class RegPage extends StatelessWidget {
 
 
     Future sigmUp() async {
+      if(!RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(_email_controller.text.trim()) && _email_controller.text.isEmpty){
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text("Email не валиден"),
+        ));
+        return;
+      }
+      if(_password_controller.text.trim().length < 8){
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text("Пароль меньше 8 символов"),
+        ));
+        return;
+      }
       final user = await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: _email_controller.text.trim(),
           password: _password_controller.text.trim());
@@ -19,6 +31,11 @@ class RegPage extends StatelessWidget {
       if(user.user != null){
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (context) => Base()), (route) => false,);
+      }
+      else{
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text("Ошибка регистрации"),
+        ));
       }
     }
 
