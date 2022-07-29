@@ -28,7 +28,7 @@ class CardComment extends StatelessWidget {
                 padding: EdgeInsets.only(left: 16.w),
                 child: Column(
                   children: [
-                    Text(mComment.name ?? "", style: TextStyle(fontWeight: FontWeight.bold)),
+                    Text(mComment.name ?? "", style: Theme.of(context).textTheme.bodyText2?.copyWith(fontWeight: FontWeight.bold)),
                     SizedBox(height: 16.h,),
                     Text(mComment.body ?? ""),
                     SizedBox(height: 12.h,),
@@ -37,7 +37,7 @@ class CardComment extends StatelessWidget {
                       children: [
                         Text(
                           mComment.email ?? "",
-                          style: TextStyle(
+                          style: Theme.of(context).textTheme.bodyText2?.copyWith(
                             color: Colors.grey
                           ),
                         ),

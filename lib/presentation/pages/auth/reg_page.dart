@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:json_test_exercise/core/common/utils.dart';
 import 'package:json_test_exercise/presentation/pages/base/base.dart';
 
 class RegPage extends StatelessWidget {
@@ -24,18 +25,22 @@ class RegPage extends StatelessWidget {
         ));
         return;
       }
-      final user = await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: _email_controller.text.trim(),
-          password: _password_controller.text.trim());
+      try {
+        final user = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+            email: _email_controller.text.trim(),
+            password: _password_controller.text.trim());
 
-      if(user.user != null){
-        Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (context) => Base()), (route) => false,);
+        if (user.user != null) {
+          Utils.routerScreenDeleteStack(context, Base());
+        }
+        else {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text("Ошибка регистрации"),
+          ));
+        }
       }
-      else{
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text("Ошибка регистрации"),
-        ));
+      on FirebaseAuthException catch (e){
+        Utils.toast(context, e.message ?? "");
       }
     }
 
@@ -56,8 +61,8 @@ class RegPage extends StatelessWidget {
                   height: 75,
                 ),
                 Text(
-                  "Hello again",
-                  style: TextStyle(
+                  "Hello Anonymus",
+                  style: Theme.of(context).textTheme.bodyText2?.copyWith(
                       fontSize: 36,
                       fontWeight: FontWeight.w400,
                       color: Colors.black),
@@ -88,6 +93,7 @@ class RegPage extends StatelessWidget {
                   padding: EdgeInsets.symmetric(horizontal: 25),
                   child: TextField(
                     controller: _password_controller,
+                    obscureText: true,
                     decoration: InputDecoration(
                         enabledBorder: OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.white),
@@ -115,7 +121,7 @@ class RegPage extends StatelessWidget {
                       child: Center(
                         child: Text(
                           "Sign Up",
-                          style: TextStyle(
+                          style: Theme.of(context).textTheme.bodyText2?.copyWith(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
                               fontSize: 18),

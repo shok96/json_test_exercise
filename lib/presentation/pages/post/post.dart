@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:json_test_exercise/core/common/utils.dart';
 import 'package:json_test_exercise/data/models/MPost.dart';
 import 'package:json_test_exercise/domain/usecases/intf/UCPost.dart';
 import 'package:json_test_exercise/presentation/bloc/comment/bloc_comment_bloc.dart';
@@ -14,6 +15,9 @@ import 'package:json_test_exercise/di.dart' as di;
 import 'package:json_test_exercise/presentation/widgets/bottom_comment_field.dart';
 import 'package:json_test_exercise/presentation/widgets/card_comment.dart';
 import 'package:json_test_exercise/presentation/widgets/card_short_list.dart';
+import 'package:json_test_exercise/presentation/widgets/check_connective.dart';
+import 'package:json_test_exercise/presentation/widgets/error_card.dart';
+import 'package:json_test_exercise/presentation/widgets/icon_circle.dart';
 
 class Post extends StatelessWidget {
   MPost mPost;
@@ -24,6 +28,12 @@ class Post extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          actions: [
+            CheckConnective(),
+            IconCircle(icon: Icons.logout, action: () async{
+              Utils.logOut(context);
+            },)
+          ],
           title: Text(mPost.title ?? ""),
         ),
         body: MultiBlocProvider(
@@ -71,7 +81,7 @@ class _PostScreenState extends State<_PostScreen> {
               children: [
                 Text(
                   widget.mPost.title ?? "",
-                  style: TextStyle(
+                  style: Theme.of(context).textTheme.bodyText2?.copyWith(
                     fontWeight: FontWeight.bold,
                     fontSize: 18.sp,
                   ),
@@ -82,7 +92,7 @@ class _PostScreenState extends State<_PostScreen> {
                 ),
                 Text(
                   widget.mPost.body ?? "",
-                  style: TextStyle(fontSize: 15.sp),
+                  style: Theme.of(context).textTheme.bodyText2?.copyWith(fontSize: 15.sp),
                 ),
               ],
             ),
@@ -92,6 +102,11 @@ class _PostScreenState extends State<_PostScreen> {
           child: BlocBuilder<BlocComment, BlocCommentState>(
               builder: (context, state) {
             return state.maybeMap(
+              error: (e) => ErrorCard(action: () {
+                context
+                    .read<BlocComment>()
+                    .add(BlocCommentEvent.getCommentById(widget.mPost.id ?? 0));
+              },),
               orElse: () => Container(),
               proceed: (_) => UnconstrainedBox(
                 child: Padding(

@@ -1,6 +1,5 @@
-
-
 import 'package:json_test_exercise/core/exception/CacheException.dart';
+import 'package:json_test_exercise/data/datasource/db/CacheDataSource.dart';
 import 'package:json_test_exercise/data/datasource/network/RemoteDataSource.dart';
 import 'package:json_test_exercise/data/datasource/network/responseModel/MTaskResult.dart';
 import 'package:json_test_exercise/data/models/MAlbums.dart';
@@ -22,13 +21,13 @@ enum mode {
 
 class RepositoryImpl implements Repository {
   RemoteDataSource remoteDataSource;
-  // CacheDataSource cacheDataSource;
-
-  // RepositoryImpl(
-  //     {required this.remoteDataSource, required this.cacheDataSource});
+  CacheDataSource cacheDataSource;
 
   RepositoryImpl(
-      {required this.remoteDataSource});
+      {required this.remoteDataSource, required this.cacheDataSource});
+
+  // RepositoryImpl(
+  //     {required this.remoteDataSource});
 
   // @override
   // Future<MTaskResult<List<MHistory>>> getHistory() {
@@ -120,6 +119,30 @@ class RepositoryImpl implements Repository {
     return _getRepository<List<MPhoto>>(mode.GetPhotosByAlbumId, id: id);
   }
 
+  @override
+  Future<MTaskResult<List<int>>> insertListMPost(List<MPost> listMPots) {
+    return cacheDataSource.insertListMPost(listMPots);
+  }
+
+  @override
+  Future<MTaskResult<List<int>>> insertListMUser(List<MUser> listMUser) {
+    return cacheDataSource.insertListUser(listMUser);
+  }
+
+  @override
+  Future<MTaskResult<List<int>>> insertListMAlbums(List<MAlbums> listMAlbums) {
+    return cacheDataSource.insertListMAlbums(listMAlbums);
+  }
+
+  @override
+  Future<MTaskResult<List<int>>> insertListMComments(List<MComment> listMComments) {
+    return cacheDataSource.insertListMComments(listMComments);
+  }
+
+  @override
+  Future<MTaskResult<List<int>>> insertListMPhotos(List<MPhoto> listMPhotos) {
+    return cacheDataSource.insertListMPhotos(listMPhotos);
+  }
 
   // @override
   // Future<MTaskResult<DBServer>> getDB() {
@@ -233,9 +256,9 @@ class RepositoryImpl implements Repository {
   //   return cacheDataSource.deleteBookFromId(id);
   // }
   //
-  Future<MTaskResult<T>> _getRepository<T>(mode values, {int id = 0}) {
+  Future<MTaskResult<T>> _getRepository<T>(mode values, {int id = 0}) async{
     try {
-      return _getCache(values, id: id, params: null);
+      return await _getCache(values, id: id, params: null);
     } catch (_) {
       return _getRemote(values, id: id, params: null);
     }
@@ -359,8 +382,32 @@ class RepositoryImpl implements Repository {
     }
   }
 
-  _getCache<Params>(mode values, {required int id, required Params params}) {
+  _getCache<Params>(mode values, {required int id, required Params params}) async{
     switch (values) {
+    case mode.PostByUserId:
+      {
+        return cacheDataSource.emptyData(await cacheDataSource.getPostByUserId(id));
+      }
+      case mode.Users:
+        {
+          return cacheDataSource.emptyData(await cacheDataSource.getUsers());
+        }
+      case mode.UserById:
+        {
+          return cacheDataSource.emptyData(await cacheDataSource.getUserById(id));
+        }
+      case mode.CommetnsByPostId:
+        {
+          return cacheDataSource.emptyData(await cacheDataSource.getCommentsByPostId(id));
+        }
+      case mode.GetAlbumsByUserId:
+        {
+          return cacheDataSource.emptyData(await cacheDataSource.getAlbumsByUserId(id));
+        }
+      case mode.GetPhotosByAlbumId:
+        {
+          return cacheDataSource.emptyData(await cacheDataSource.getPhotosByAlbumId(id));
+        }
       // case mode.History:
       //   {
       //     throw CacheException(model: values.name);
@@ -400,7 +447,5 @@ class RepositoryImpl implements Repository {
     }
   }
 
-
-  
 
 }

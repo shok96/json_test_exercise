@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:json_test_exercise/core/common/utils.dart';
 import 'package:json_test_exercise/presentation/pages/auth/reg_page.dart';
 import 'package:json_test_exercise/presentation/pages/base/base.dart';
 
@@ -12,9 +13,14 @@ class LoginPage extends StatelessWidget {
     final _password_controller = TextEditingController();
 
     Future sigmIn() async {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: _email_controller.text.trim(),
-          password: _password_controller.text.trim());
+      try {
+        await FirebaseAuth.instance.signInWithEmailAndPassword(
+            email: _email_controller.text.trim(),
+            password: _password_controller.text.trim());
+      }
+       on FirebaseAuthException catch (e){
+        Utils.toast(context, e.message ?? "");
+      }
     }
 
     return Scaffold(
@@ -32,8 +38,8 @@ class LoginPage extends StatelessWidget {
                   height: 75,
                 ),
                 Text(
-                  "Hello again",
-                  style: TextStyle(
+                  "Hello Anonymus",
+                  style: Theme.of(context).textTheme.bodyText2?.copyWith(
                       fontSize: 36,
                       fontWeight: FontWeight.w400,
                       color: Colors.black),
@@ -63,6 +69,7 @@ class LoginPage extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 25),
                   child: TextField(
+                    obscureText: true,
                     controller: _password_controller,
                     decoration: InputDecoration(
                         enabledBorder: OutlineInputBorder(
@@ -91,7 +98,7 @@ class LoginPage extends StatelessWidget {
                       child: Center(
                         child: Text(
                           "Sign In",
-                          style: TextStyle(
+                          style: Theme.of(context).textTheme.bodyText2?.copyWith(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
                               fontSize: 18),
@@ -107,8 +114,7 @@ class LoginPage extends StatelessWidget {
                   padding: EdgeInsets.symmetric(horizontal: 25),
                   child: GestureDetector(
                     onTap: (){
-                      Navigator.of(context).push(
-                          MaterialPageRoute(builder: (context) => RegPage()));
+                      Utils.routerScreen(context, RegPage());
                     },
                     child: Container(
                       padding: EdgeInsets.all(20),
@@ -118,7 +124,7 @@ class LoginPage extends StatelessWidget {
                       child: Center(
                         child: Text(
                           "Sign Up",
-                          style: TextStyle(
+                          style: Theme.of(context).textTheme.bodyText2?.copyWith(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
                               fontSize: 14),

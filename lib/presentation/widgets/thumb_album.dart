@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:json_test_exercise/core/common/utils.dart';
 import 'package:json_test_exercise/data/models/MAlbums.dart';
 import 'package:json_test_exercise/di.dart' as di;
 import 'package:json_test_exercise/domain/usecases/intf/UCPhoto.dart';
@@ -48,7 +49,7 @@ class _ThumbAlbumScreenState extends State<_ThumbAlbumScreen> {
   Widget build(BuildContext context) {
     return InkWell(
         onTap: () {
-          Navigator.of(context).push(MaterialPageRoute(builder: (builder) => Album(mAlbum: widget.mAlbum,)));
+          Utils.routerScreen(context, Album(mAlbum: widget.mAlbum,));
         },
         child: Card(
           color: Colors.greenAccent,
@@ -65,7 +66,7 @@ class _ThumbAlbumScreenState extends State<_ThumbAlbumScreen> {
                     overflow: TextOverflow.ellipsis,
                     softWrap: true,
                     maxLines: 2,
-                    style: TextStyle(
+                    style: Theme.of(context).textTheme.bodyText2?.copyWith(
                         color: Colors.white,
                         fontSize: 16.sp,
                         fontWeight: FontWeight.bold),

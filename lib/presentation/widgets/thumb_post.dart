@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:json_test_exercise/core/common/utils.dart';
 import 'package:json_test_exercise/data/models/MPost.dart';
 import 'package:json_test_exercise/presentation/pages/post/post.dart';
 
@@ -13,7 +14,7 @@ class ThumbPost extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: (){
-        Navigator.of(context).push(MaterialPageRoute(builder: (builder) => Post(mPost: mPost)));
+        Utils.routerScreen(context, Post(mPost: mPost));
       },
       child: Card(
         color: Colors.redAccent.shade100,
@@ -24,7 +25,7 @@ class ThumbPost extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(mPost.title ?? "", overflow: TextOverflow.ellipsis, softWrap: true, maxLines: 2, style: TextStyle(color: Colors.white, fontSize: 16.sp, fontWeight: FontWeight.bold),),
+                Text(mPost.title ?? "", overflow: TextOverflow.ellipsis, softWrap: true, maxLines: 2, style: Theme.of(context).textTheme.bodyText2?.copyWith(color: Colors.white, fontSize: 16.sp, fontWeight: FontWeight.bold),),
                 Text(mPost.body ?? "", overflow: TextOverflow.ellipsis, softWrap: true, maxLines: 4, ),
               ],
             ),

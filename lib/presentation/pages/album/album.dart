@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:json_test_exercise/core/common/utils.dart';
 import 'package:json_test_exercise/data/models/MAlbums.dart';
 import 'package:json_test_exercise/data/models/MPhoto.dart';
 
@@ -10,6 +11,9 @@ import 'package:json_test_exercise/presentation/bloc/photo/bloc_photo_bloc.dart'
 import 'package:json_test_exercise/presentation/bloc/photo/bloc_photo_event.dart';
 import 'package:json_test_exercise/presentation/bloc/photo/bloc_photo_state.dart';
 import 'package:json_test_exercise/presentation/widgets/bloc_proxy.dart';
+import 'package:json_test_exercise/presentation/widgets/check_connective.dart';
+import 'package:json_test_exercise/presentation/widgets/error_card.dart';
+import 'package:json_test_exercise/presentation/widgets/icon_circle.dart';
 import 'package:json_test_exercise/presentation/widgets/slider.dart';
 
 class Album extends StatelessWidget {
@@ -23,6 +27,12 @@ class Album extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(mAlbum.title ?? ""),
+        actions: [
+          CheckConnective(),
+          IconCircle(icon: Icons.logout, action: () async{
+            Utils.logOut(context);
+          },)
+        ],
       ),
       body: BlocProxy<BlocPhoto>(
           bloc: (context, bloc) => BlocPhoto(di.sl<UCPhoto>()),
@@ -65,7 +75,7 @@ class _AlbumScreenState extends State<_AlbumScreen> {
               children: [
                 Text(
                   widget.mAlbum.title ?? "",
-                  style: TextStyle(
+                  style: Theme.of(context).textTheme.bodyText2?.copyWith(
                     fontWeight: FontWeight.bold,
                     fontSize: 18.sp,
                   ),
@@ -82,15 +92,15 @@ class _AlbumScreenState extends State<_AlbumScreen> {
         BlocBuilder<BlocPhoto, BlocPhotoState>(
           builder: (context, state) {
             return state.maybeMap(
+              error: (e) => ErrorCard(action: () {
+                context.read<BlocPhoto>().add(BlocPhotoEvent.getPhotoById(widget.mAlbum.id ?? 0));
+              },),
               idle: (_) => Container(),
               proceed: (_) => Center(
                 child: CircularProgressIndicator(),
               ),
               fetchedListPhoto: (data) => SizedBox(height: 250.h, child: SliderPhoto(mPhoto: data.Photo)),
               empty: (_) => Container(),
-              error: (data) => Center(
-                child: Text(data.error),
-              ),
               orElse: () => Container(),
             );
           },

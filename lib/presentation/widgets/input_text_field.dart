@@ -23,7 +23,7 @@ class InputTextField extends StatelessWidget {
             contentPadding: EdgeInsets.only(left: 10.w),
             border: InputBorder.none,
             hintText: hint,
-            hintStyle: TextStyle(
+            hintStyle: Theme.of(context).textTheme.bodyText2?.copyWith(
               fontFamily: 'Pretendard',
               color: const Color(0xff222222).withAlpha(76),
               fontSize: 12,

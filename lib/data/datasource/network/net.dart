@@ -1,3 +1,4 @@
+import 'package:json_test_exercise/core/common/constants.dart';
 import 'package:json_test_exercise/data/models/MAlbums.dart';
 import 'package:json_test_exercise/data/models/MComment.dart';
 import 'package:json_test_exercise/data/models/MPhoto.dart';
@@ -9,7 +10,7 @@ import 'package:dio/dio.dart' hide Headers;
 
 part 'net.g.dart';
 
-@RestApi(baseUrl: "https://jsonplaceholder.typicode.com/")
+@RestApi(baseUrl: URL)
 abstract class Api{
 
   factory Api(Dio dio, {String baseUrl}) = _Api;
@@ -38,7 +39,5 @@ abstract class Api{
   @POST("comments/")
   Future<MComment?> createComments(@Body() MComment data);
 
-  // @POST("users/")
-  // Future<MResponseAuthCreate?> createUser(@Body() MRegAuth regAuth);
 
 }

@@ -15,8 +15,12 @@ class UCUserImpl extends UCUser {
   }
 
   @override
-  Future<MTaskResult<List<MUser>>> getUsers() {
-    return _repository.getUsers();
+  Future<MTaskResult<List<MUser>>> getUsers() async{
+    final data = await _repository.getUsers();
+    if(data.isSuccessfull && data.body != null && data.modeSourceData == ModeSourceData.network()){
+      await _repository.insertListMUser(data.body!);
+    }
+    return data;
   }
 
 }

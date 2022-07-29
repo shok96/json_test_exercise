@@ -13,6 +13,14 @@ abstract class Repository{
   Future<MTaskResult<MComment>> createComment(MComment data);
   Future<MTaskResult<List<MAlbums>>> getAlbumsByUserId(int id);
   Future<MTaskResult<List<MPhoto>>> getPhotosByAlbumId(int id);
+
+
+
+  Future<MTaskResult<List<int>>> insertListMPost(List<MPost> listMPots);
+  Future<MTaskResult<List<int>>> insertListMUser(List<MUser> listMUser);
+  Future<MTaskResult<List<int>>> insertListMAlbums(List<MAlbums> listMAlbums);
+  Future<MTaskResult<List<int>>> insertListMPhotos(List<MPhoto> listMPhotos);
+  Future<MTaskResult<List<int>>> insertListMComments(List<MComment> listMComments);
   // Future<MTaskResult<List<MSmena>>> getSmens();
   // Future<MTaskResult<List<MSmena>>> getSmena(int id);
   // Future<MTaskResult<List<MBlog>>> getBlogs();

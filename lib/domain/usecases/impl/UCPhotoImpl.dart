@@ -9,8 +9,12 @@ class UCPhotoImpl extends UCPhoto {
   UCPhotoImpl(this._repository);
 
   @override
-  Future<MTaskResult<List<MPhoto>>> getPhotoByUserId(int id) {
-    return _repository.getPhotosByAlbumId(id);
+  Future<MTaskResult<List<MPhoto>>> getPhotoByUserId(int id) async{
+    final data = await _repository.getPhotosByAlbumId(id);
+    if(data.isSuccessfull && data.body != null && data.modeSourceData == ModeSourceData.network()){
+      await _repository.insertListMPhotos(data.body!);
+    }
+    return data;
   }
 
   @override

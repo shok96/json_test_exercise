@@ -9,8 +9,12 @@ class UCPostImpl extends UCPost {
   UCPostImpl(this._repository);
 
   @override
-  Future<MTaskResult<List<MPost>>> getPostByUserId(int id) {
-    return _repository.getPostByUserId(id);
+  Future<MTaskResult<List<MPost>>> getPostByUserId(int id) async{
+    final data = await _repository.getPostByUserId(id);
+    if(data.isSuccessfull && data.body != null && data.modeSourceData == ModeSourceData.network()){
+      await _repository.insertListMPost(data.body!);
+    }
+    return data;
   }
 
   @override

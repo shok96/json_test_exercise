@@ -50,7 +50,7 @@ class UserCardProfile extends StatelessWidget {
                 ],
               ),
               SizedBox(height: 20.r,),
-              Text(user.name ?? "", style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),),
+              Text(user.name ?? "", style: Theme.of(context).textTheme.bodyText2?.copyWith(fontSize: 25, fontWeight: FontWeight.bold),),
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 25.h, horizontal: 30.w),
                 child: Column(
@@ -86,14 +86,14 @@ class UserCardProfile extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  Text(company.name ?? "", style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold)),
+                  Text(company.name ?? "", style: Theme.of(context).textTheme.bodyText2?.copyWith(fontSize: 20.sp, fontWeight: FontWeight.bold)),
                   SizedBox(height: 25.h,),
                  Padding(
                    padding: EdgeInsets.symmetric(horizontal: 12.w),
-                   child: Text(company.catchPhrase ?? "", style: TextStyle(fontStyle: FontStyle.italic, color: Colors.grey, fontSize: 18.sp),),
+                   child: Text(company.catchPhrase ?? "", style: Theme.of(context).textTheme.bodyText2?.copyWith(fontStyle: FontStyle.italic, color: Colors.grey, fontSize: 18.sp),),
                  ),
                   SizedBox(height: 25.h,),
-                  Text(company.bs ?? "", style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold)),
+                  Text(company.bs ?? "", style: Theme.of(context).textTheme.bodyText2?.copyWith(fontSize: 16.sp, fontWeight: FontWeight.bold)),
                 ],
               ),
             ),
@@ -121,7 +121,7 @@ class _RowItem extends StatelessWidget{
       child: Row(children: [
         Icon(icon),
         SizedBox(width: 16.r,),
-        Expanded(child: Text(text, style: TextStyle(color: color != null ? color : Colors.black),))
+        Expanded(child: Text(text, style: Theme.of(context).textTheme.bodyText2?.copyWith(color: color != null ? color : Colors.black),))
       ],),
     );
   }

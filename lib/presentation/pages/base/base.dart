@@ -1,11 +1,14 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:json_test_exercise/presentation/bloc/connective/connective_cubit.dart';
 import 'package:json_test_exercise/presentation/bloc/nav_bottom/cubit_bottom_nav.dart';
 import 'package:json_test_exercise/presentation/bloc/nav_bottom/cubit_bottom_nav_state.dart';
+import 'package:json_test_exercise/presentation/pages/about/about.dart';
 import 'package:json_test_exercise/presentation/pages/home/home.dart';
 import 'package:collection/collection.dart';
 import 'package:json_test_exercise/presentation/widgets/bloc_proxy.dart';
+import 'package:json_test_exercise/di.dart' as di;
 
 class TabNavigationItem {
   final Widget page;
@@ -32,7 +35,7 @@ List<TabNavigationItem> items(
           title: Text("Главная"),
           title_text: "Главная", menuValue: CubitBottomNavState.Home()),
       TabNavigationItem(
-          page: Home(),
+          page: About(),
           icon: Icons.emoji_people,
           title: Text("О Авторе"),
           title_text: "О Авторе", menuValue: CubitBottomNavState.About()),
@@ -44,10 +47,7 @@ class Base extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  BlocProxy<CubitBottomNav>(
-            bloc: (context, bloc) => CubitBottomNav(),
-            child: _BaseScreen()
-    );
+    return  _BaseScreen();
   }
 }
 

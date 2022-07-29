@@ -7,7 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:json_test_exercise/core/themes/base_theme.dart';
 import 'package:json_test_exercise/presentation/bloc/auth/auth_cubit.dart';
+import 'package:json_test_exercise/presentation/bloc/connective/connective_cubit.dart';
 import 'package:json_test_exercise/presentation/bloc/nav_bottom/cubit_bottom_nav.dart';
 import 'package:json_test_exercise/presentation/pages/splash/splash.dart';
 import 'di.dart' as di;
@@ -28,15 +30,34 @@ Future<void> main() async {
       await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
       FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
     }
-    //await GetStorage.init();
-    //runApp(MyApp(database));
+
 
     SystemChrome.setPreferredOrientations(
             [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown])
-        .then((_) => runApp(MyApp()));
+        .then((_) =>  BlocOverrides.runZoned(
+          () => runApp(const MyApp()),
+      blocObserver: AppBlocObserver(),
+    )
+
+    );
   }, (error, stack) => FirebaseCrashlytics.instance.recordError(error, stack));
 
-  // runApp(MyApp());
+
+}
+
+
+class AppBlocObserver extends BlocObserver {
+  @override
+  void onChange(BlocBase bloc, Change change) {
+    super.onChange(bloc, change);
+    print(change);
+  }
+
+  @override
+  void onTransition(Bloc bloc, Transition transition) {
+    super.onTransition(bloc, transition);
+    print(transition);
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -44,18 +65,18 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-        home: MultiBlocProvider(
-            providers: [
-              BlocProvider<AuthCubit>(create: (context) => di.sl<AuthCubit>()),
-            ],
-            child: ScreenUtilInit(
+    return MultiBlocProvider(
+        providers: [
+          BlocProvider<AuthCubit>(create: (context) => di.sl<AuthCubit>()),
+          BlocProvider<ConnectiveCubit>(create: (context) => di.sl<ConnectiveCubit>()),
+          BlocProvider<CubitBottomNav>(create: (context) => di.sl<CubitBottomNav>()),
+        ],
+        child: MaterialApp(
+            theme: themeData(context),
+        title: 'Flutter Test Demo',
+
+        home:  ScreenUtilInit(
                 designSize: Size(414, 896),
-                builder: (BuildContext context, Widget? child) =>
-                    Splash())));
+                builder: (BuildContext context, Widget? child) => Splash())));
   }
 }

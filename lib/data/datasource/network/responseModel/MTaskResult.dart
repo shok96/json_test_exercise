@@ -71,19 +71,52 @@ part 'MTaskResult.g.dart';
 class MTaskResult<T> with _$MTaskResult<T> {
   const MTaskResult._();
 
-  const factory MTaskResult(
+  factory MTaskResult(
       {required bool isSuccessfull,
       String? data,
       String? error,
       Map<String, dynamic>? json_data,
+      ModeSourceData? modeSourceData,
       T? body}) = _MTaskResult;
 
-    factory MTaskResult.createBlank(T data, bool isSuccessfull) => MTaskResult<T>(isSuccessfull: isSuccessfull, body: data);
+  factory MTaskResult.createBlank(T data, bool isSuccessfull) =>
+      MTaskResult<T>(isSuccessfull: isSuccessfull, body: data);
 
-    factory MTaskResult.createFailure({@Default("null blank") String? error}) => MTaskResult<T>(isSuccessfull: false, error: error);
+  factory MTaskResult.createBlankNetwork(T data, bool isSuccessfull) =>
+      MTaskResult<T>(isSuccessfull: isSuccessfull, body: data, modeSourceData: ModeSourceData.network());
+
+  factory MTaskResult.createBlankCache(T data, bool isSuccessfull) =>
+      MTaskResult<T>(isSuccessfull: isSuccessfull, body: data, modeSourceData: ModeSourceData.cache());
+
+  factory MTaskResult.createFailure({@Default("null blank") String? error}) =>
+      MTaskResult<T>(isSuccessfull: false, error: error);
+
+  factory MTaskResult.createFailureNetwork({@Default("null blank") String? error}) =>
+      MTaskResult<T>(isSuccessfull: false, error: error, modeSourceData: ModeSourceData.network());
+
+  factory MTaskResult.createFailureCache({@Default("null blank") String? error}) =>
+      MTaskResult<T>(isSuccessfull: false, error: error, modeSourceData: ModeSourceData.cache());
+
+  factory MTaskResult.ModeDataSource(
+          MTaskResult base, ModeSourceData modeSourceData) =>
+      MTaskResult<T>(
+          isSuccessfull: base.isSuccessfull,
+          data: base.data,
+          error: base.error,
+          json_data: base.json_data,
+          modeSourceData: modeSourceData,
+          body: base.body);
 
   factory MTaskResult.fromJson(
-      Map<String, dynamic> json, T Function(Object?) fromJsonT) =>
+          Map<String, dynamic> json, T Function(Object?) fromJsonT) =>
       _$MTaskResultFromJson<T>(json, fromJsonT);
+}
 
+@freezed
+class ModeSourceData with _$ModeSourceData {
+  const factory ModeSourceData.network() = _Network;
+
+  const factory ModeSourceData.cache() = _Cache;
+
+  factory ModeSourceData.fromJson(Map<String, dynamic> json) => _$ModeSourceDataFromJson(json);
 }

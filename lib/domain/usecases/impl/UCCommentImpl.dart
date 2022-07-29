@@ -9,8 +9,12 @@ class UCCommentImpl extends UCComment {
   UCCommentImpl(this._repository);
 
   @override
-  Future<MTaskResult<List<MComment>>> getCommentByUserId(int id) {
-    return _repository.getCommentsByPostId(id);
+  Future<MTaskResult<List<MComment>>> getCommentByUserId(int id) async{
+    final data = await _repository.getCommentsByPostId(id);
+    if(data.isSuccessfull && data.body != null && data.modeSourceData == ModeSourceData.network()){
+      await _repository.insertListMComments(data.body!);
+    }
+    return data;
   }
 
   @override

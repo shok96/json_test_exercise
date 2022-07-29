@@ -25,7 +25,7 @@ class CardShortList<T> extends StatelessWidget {
             children: [
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 8.0.w, vertical: 4.h),
-                child: Text(title, style: TextStyle(color: Colors.black, fontSize: 18.sp, fontWeight: FontWeight.bold),),
+                child: Text(title, style: Theme.of(context).textTheme.bodyText2?.copyWith(color: Colors.black, fontSize: 18.sp, fontWeight: FontWeight.bold),),
               ),
               SizedBox(
                 height: 200.h,
@@ -55,7 +55,7 @@ class CardShortList<T> extends StatelessWidget {
                       },
                       child: Text(
                         "More...",
-                        style: TextStyle(
+                        style: Theme.of(context).textTheme.bodyText2?.copyWith(
                             fontSize: 18.sp,
                             fontWeight: FontWeight.bold,
                             color: Colors.blue),

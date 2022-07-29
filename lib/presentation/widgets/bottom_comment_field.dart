@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:json_test_exercise/core/common/utils.dart';
 import 'package:json_test_exercise/data/models/MComment.dart';
 import 'package:json_test_exercise/domain/usecases/intf/UCComment.dart';
 import 'package:json_test_exercise/presentation/bloc/comment/bloc_comment_bloc.dart';
@@ -51,6 +52,7 @@ class _BottomCommentFieldState extends State<BottomCommentField> {
       context: context,
       isScrollControlled: true,
       builder: (BuildContext context) {
+        var error = false;
         return BlocProxy(
           bloc:  (context, bloc) => BlocComment(di.sl<UCComment>()),
           child: Builder(
@@ -61,46 +63,64 @@ class _BottomCommentFieldState extends State<BottomCommentField> {
                 borderRadius: BorderRadius.only(
                     topRight: Radius.circular(20.r),
                     topLeft: Radius.circular(20.r)),
-                child: Container(
-                  color: Colors.white,
-                  child: Padding(
-                    padding: EdgeInsets.all(12.r),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        Text("Отправить комментарий"),
-                        InputTextField(controller: email, hint: "email"),
-                        InputTextField(controller: name, hint: "name"),
-                        InputTextField(controller: body, hint: "body"),
-                        ButtonSubmit(
-                          text: 'Отправить',
-                          action: () {
-                            if(email.text.isNotEmpty && body.text.isNotEmpty && name.text.isNotEmpty){
-                              context_bloc.read<BlocComment>().add(BlocCommentEvent.createComment(MComment(
-                                body: body.text,
-                                email: email.text,
-                                name: name.text,
-                                postId: widget.id
-                              )));
+                child: StatefulBuilder(
+                  builder: (BuildContext context, void Function(void Function()) setState) {
 
-                              context_bloc.read<BlocComment>().stream.listen((event) {event.maybeWhen(orElse: (){}, fetchedComment: (data) {
-                                Navigator.pop(context);
-                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                  content: Text("Сообщение отправлено успешно"),
-                                ));
-                              } );});
 
-                             // Navigator.pop(context);
-                            }
-                            else
-                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                content: Text("Не все поля заполнены"),
-                              ));
-                          },
-                        )
-                      ],
-                    ),
-                  ),
+
+                    return Container(
+                      color: Colors.white,
+                      child: Padding(
+                        padding: EdgeInsets.all(12.r),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Text("Отправить комментарий"),
+                            InputTextField(controller: email, hint: "email"),
+                            InputTextField(controller: name, hint: "name"),
+                            InputTextField(controller: body, hint: "body"),
+                            error == true? Text("Не все поля заполнены") : SizedBox.shrink(),
+                            SizedBox(height: 15.h,),
+                            ButtonSubmit(
+                              text: 'Отправить',
+                              action: () {
+                                if (email.text.isNotEmpty &&
+                                    body.text.isNotEmpty &&
+                                    name.text.isNotEmpty) {
+                                  context_bloc.read<BlocComment>().add(
+                                      BlocCommentEvent.createComment(MComment(
+                                          body: body.text,
+                                          email: email.text,
+                                          name: name.text,
+                                          postId: widget.id
+                                      )));
+
+                                  context_bloc
+                                      .read<BlocComment>()
+                                      .stream
+                                      .listen((event) {
+                                    event.maybeWhen(
+                                        orElse: () {}, fetchedComment: (data) {
+                                      Navigator.pop(context);
+                                      name.clear();
+                                      body.clear();
+                                      Utils.toast(widget.parrent,
+                                          "Сообщение отправлено успешно");
+                                    });
+                                  });
+
+                                }
+                                else
+                                  setState((){
+                                    error = true;
+                                  });
+                              },
+                            )
+                          ],
+                        ),
+                      ),
+                    );
+                  }
                 ),
               ),
             ),
