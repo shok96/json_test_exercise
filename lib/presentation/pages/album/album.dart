@@ -1,3 +1,11 @@
+/*
+ * *
+ *  * Created by Kosyachenko Roman aka Andlancer on 29.07.2022, 22:23
+ *  * Copyright (c) 2022 . All rights reserved.
+ *  * Last modified 29.07.2022, 22:00
+ *
+ */
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

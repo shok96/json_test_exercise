@@ -1,3 +1,11 @@
+/*
+ * *
+ *  * Created by Kosyachenko Roman aka Andlancer on 29.07.2022, 22:23
+ *  * Copyright (c) 2022 . All rights reserved.
+ *  * Last modified 29.07.2022, 21:40
+ *
+ */
+
 import 'package:get_it/get_it.dart';
 import 'package:json_test_exercise/data/datasource/db/CacheDataSource.dart';
 import 'package:json_test_exercise/data/datasource/db/DB.dart';

@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+  - /**
+  -  * Created by Kosyachenko Roman aka Andlancer on 29.07.2022, 22:23
+  -  * Copyright (c) 2022 . All rights reserved.
+  -  * Last modified 19.07.2022, 20:58
+  -  */
+  -->
+
 <svg width="351px" height="351px" viewBox="-47.5 0 351 351" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid">
     <defs>
         <path d="M1.25273437,280.731641 L2.85834533,277.600858 L102.211177,89.0833546 L58.0613266,5.6082033 C54.3920011,-1.28304578 45.0741245,0.473674398 43.8699203,8.18789086 L1.25273437,280.731641 Z" id="path-1"></path>

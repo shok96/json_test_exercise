@@ -1,3 +1,11 @@
+/*
+ * *
+ *  * Created by Kosyachenko Roman aka Andlancer on 29.07.2022, 22:23
+ *  * Copyright (c) 2022 . All rights reserved.
+ *  * Last modified 29.07.2022, 22:04
+ *
+ */
+
 import 'package:flutter/material.dart';
 import 'package:json_test_exercise/core/common/utils.dart';
 import 'package:json_test_exercise/presentation/widgets/check_connective.dart';

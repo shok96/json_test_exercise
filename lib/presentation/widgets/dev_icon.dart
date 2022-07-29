@@ -1,4 +1,12 @@
 
+/*
+ * *
+ *  * Created by Kosyachenko Roman aka Andlancer on 29.07.2022, 22:23
+ *  * Copyright (c) 2022 . All rights reserved.
+ *  * Last modified 29.07.2022, 21:19
+ *
+ */
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
