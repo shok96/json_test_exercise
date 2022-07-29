@@ -133,27 +133,7 @@ class _PostScreenState extends State<_PostScreen> {
         )
       ],
     )
-        // BlocBuilder<BlocPost, BlocPostState>(
-        //   builder: (context, state) {
-        //     return state.maybeMap(
-        //       idle: (_) => Container(),
-        //       proceed: (_) => Center(
-        //         child: CircularProgressIndicator(),
-        //       ),
-        //       fetchedListPost: (data) => ListView.builder(
-        //         itemCount: data.Post.length,
-        //         itemBuilder: (BuildContext context, int index) {
-        //           return CardPost(mPost: data.Post[index]);
-        //         },
-        //       ),
-        //       empty: (_) => Container(),
-        //       error: (data) => Center(
-        //         child: Text(data.error),
-        //       ),
-        //       orElse: () => Container(),
-        //     );
-        //   },
-        // ),
+
         );
   }
 }

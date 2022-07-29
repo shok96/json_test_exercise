@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -74,7 +75,15 @@ class _ThumbAlbumScreenState extends State<_ThumbAlbumScreen> {
                   BlocBuilder<BlocPhoto, BlocPhotoState>(builder: (context, state){
                     return state.maybeMap(orElse: () => SizedBox.shrink(),
                     proceed: (_) => Center(child: CircularProgressIndicator(),),
-                      fetchedListPhoto: (data) => Image.network(data.Photo.first.thumbnailUrl ?? "", width: 100, height: 100,)
+                      fetchedListPhoto: (data) =>
+                          CachedNetworkImage(
+                            imageUrl: data.Photo.first.thumbnailUrl ?? "",
+                              width: 100, height: 100,
+                            progressIndicatorBuilder: (context, url, downloadProgress) =>
+                                Center(child: CircularProgressIndicator(value: downloadProgress.progress)),
+                            errorWidget: (context, url, error) => Icon(Icons.error),
+                          ),
+
                     );
                   })
                 ],

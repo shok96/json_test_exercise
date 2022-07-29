@@ -74,12 +74,6 @@ class _BaseScreenState extends State<_BaseScreen> {
 
   }
 
-  int _currentIndex = 0;
-
-  // Widget _getScreen(int index){
-  //   return TabNavigationItem.items[index].page!;
-  // }
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(

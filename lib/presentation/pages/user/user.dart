@@ -109,27 +109,6 @@ class _UserScreenState extends State<_UserScreen> {
           ],
         ),
       )
-      // BlocBuilder<BlocUser, BlocUserState>(
-      //   builder: (context, state) {
-      //     return state.maybeMap(
-      //       idle: (_) => Container(),
-      //       proceed: (_) => Center(
-      //         child: CircularProgressIndicator(),
-      //       ),
-      //       fetchedListUser: (data) => ListView.builder(
-      //         itemCount: data.user.length,
-      //         itemBuilder: (BuildContext context, int index) {
-      //           return CardUser(mUser: data.user[index]);
-      //         },
-      //       ),
-      //       empty: (_) => Container(),
-      //       error: (data) => Center(
-      //         child: Text(data.error),
-      //       ),
-      //       orElse: () => Container(),
-      //     );
-      //   },
-      // ),
     );
   }
 }

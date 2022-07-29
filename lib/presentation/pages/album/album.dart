@@ -107,27 +107,7 @@ class _AlbumScreenState extends State<_AlbumScreen> {
         ),
       ],
     )
-        // BlocBuilder<BlocAlbum, BlocAlbumState>(
-        //   builder: (context, state) {
-        //     return state.maybeMap(
-        //       idle: (_) => Container(),
-        //       proceed: (_) => Center(
-        //         child: CircularProgressIndicator(),
-        //       ),
-        //       fetchedListAlbum: (data) => ListView.builder(
-        //         itemCount: data.Album.length,
-        //         itemBuilder: (BuildContext context, int index) {
-        //           return CardAlbum(mAlbum: data.Album[index]);
-        //         },
-        //       ),
-        //       empty: (_) => Container(),
-        //       error: (data) => Center(
-        //         child: Text(data.error),
-        //       ),
-        //       orElse: () => Container(),
-        //     );
-        //   },
-        // ),
+
         );
   }
 }
