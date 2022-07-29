@@ -31,3 +31,23 @@ adress
 
 Дополнительное задание:
 Кэшировать все ответы от сервиса, т.е. по мере использования приложения создавать дубликат данных. Например, запросили пользователей – закэшировали, запросили альбомы пользователя, отправили комментарий к посту, закэшировали. И при каждом запросе проверять кэш на наличие данных, если они имеются отдавать из кэша, отсутствуют запросили с сервиса. Реализация кэша на ваш выбор (SharedPreferences, hive, SQLite, и т.д.).
+
+Используемые пакеты:
+
+  flutter_bloc:
+  firebase_core
+  firebase_auth
+  firebase_analytic
+  freezed_annotation
+  json_annotation
+  retrofit
+  flutter_screenutil
+  get_it
+  drift
+  sqlite3_flutter_libs
+  path_provider
+  google_fonts
+  firebase_crashlytics
+  flutter_svg
+  cached_network_image
+  connectivity_plus
