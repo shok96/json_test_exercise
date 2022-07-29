@@ -34,8 +34,10 @@ adress
 
 Используемые пакеты:
 
-  flutter_bloc:
+  flutter_bloc
+  
   firebase_core
+  
   firebase_auth
   firebase_analytic
   freezed_annotation
