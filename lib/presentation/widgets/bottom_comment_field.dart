@@ -21,6 +21,8 @@ import 'package:json_test_exercise/presentation/widgets/button_submit.dart';
 import 'package:json_test_exercise/presentation/widgets/input_text_field.dart';
 import 'package:json_test_exercise/di.dart' as di;
 
+import 'form_send_comment.dart';
+
 class BottomCommentField extends StatefulWidget {
   final Function? postComment;
   final Function refreshData;
@@ -29,9 +31,9 @@ class BottomCommentField extends StatefulWidget {
 
   BottomCommentField(
       {Key? key,
-        required this.parrent,
+      required this.parrent,
       this.postComment,
-        required this.id,
+      required this.id,
       required this.refreshData})
       : super(key: key);
 
@@ -43,9 +45,6 @@ class _BottomCommentFieldState extends State<BottomCommentField> {
   TextEditingController email = TextEditingController();
   TextEditingController name = TextEditingController();
   TextEditingController body = TextEditingController();
-  bool _isAvaliableToSend = false;
-
-
 
   @override
   void initState() {
@@ -60,76 +59,100 @@ class _BottomCommentFieldState extends State<BottomCommentField> {
       context: context,
       isScrollControlled: true,
       builder: (BuildContext context) {
-        var error = false;
         return BlocProxy(
-          bloc:  (context, bloc) => BlocComment(di.sl<UCComment>()),
+          bloc: (context, bloc) => BlocComment(di.sl<UCComment>()),
           child: Builder(
-             builder: (BuildContext context_bloc) => Container(
-              padding:
-                  EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+            builder: (BuildContext context_bloc) => Container(
+              padding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).viewInsets.bottom),
               child: ClipRRect(
                 borderRadius: BorderRadius.only(
                     topRight: Radius.circular(20.r),
                     topLeft: Radius.circular(20.r)),
-                child: StatefulBuilder(
-                  builder: (BuildContext context, void Function(void Function()) setState) {
+                child:  Container(
+                    color: Colors.white,
+                    child: Padding(
+                      padding: EdgeInsets.all(12.r),
+                      child: FormSendComment(
+                        email: email,
+                        body: body,
+                        name: name,
+                        action: (call) {
+                          call.loading();
+                          context_bloc.read<BlocComment>().add(
+                              BlocCommentEvent.createComment(MComment(
+                                  body: body.text,
+                                  email: email.text,
+                                  name: name.text,
+                                  postId: widget.id)));
 
-
-
-                    return Container(
-                      color: Colors.white,
-                      child: Padding(
-                        padding: EdgeInsets.all(12.r),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            Text("Отправить комментарий"),
-                            InputTextField(controller: email, hint: "email"),
-                            InputTextField(controller: name, hint: "name"),
-                            InputTextField(controller: body, hint: "body"),
-                            error == true? Text("Не все поля заполнены") : SizedBox.shrink(),
-                            SizedBox(height: 15.h,),
-                            ButtonSubmit(
-                              text: 'Отправить',
-                              action: () {
-                                if (email.text.isNotEmpty &&
-                                    body.text.isNotEmpty &&
-                                    name.text.isNotEmpty) {
-                                  context_bloc.read<BlocComment>().add(
-                                      BlocCommentEvent.createComment(MComment(
-                                          body: body.text,
-                                          email: email.text,
-                                          name: name.text,
-                                          postId: widget.id
-                                      )));
-
-                                  context_bloc
-                                      .read<BlocComment>()
-                                      .stream
-                                      .listen((event) {
-                                    event.maybeWhen(
-                                        orElse: () {}, fetchedComment: (data) {
-                                      Navigator.pop(context);
-                                      name.clear();
-                                      body.clear();
-                                      Utils.toast(widget.parrent,
-                                          "Сообщение отправлено успешно");
-                                    });
-                                  });
-
-                                }
-                                else
-                                  setState((){
-                                    error = true;
-                                  });
-                              },
-                            )
-                          ],
-                        ),
+                          context_bloc
+                              .read<BlocComment>()
+                              .stream
+                              .listen((event) {
+                            event.maybeWhen(
+                                orElse: () {},
+                                fetchedComment: (data) {
+                                  call.idle();
+                                  Navigator.pop(context);
+                                  name.clear();
+                                  body.clear();
+                                  Utils.toast(widget.parrent,
+                                      "Сообщение отправлено успешно");
+                                });
+                          });
+                        },
                       ),
-                    );
-                  }
-                ),
+                      // Form(
+                      //   child: Column(
+                      //     mainAxisSize: MainAxisSize.min,
+                      //     children: <Widget>[
+                      //       Text("Отправить комментарий"),
+                      //       InputTextField(controller: email, hint: "email"),
+                      //       InputTextField(controller: name, hint: "name"),
+                      //       InputTextField(controller: body, hint: "body"),
+                      //       error == true? Text("Не все поля заполнены") : SizedBox.shrink(),
+                      //       SizedBox(height: 15.h,),
+                      //       ButtonSubmit(
+                      //         text: 'Отправить',
+                      //         action: () {
+                      //           if (email.text.isNotEmpty &&
+                      //               body.text.isNotEmpty &&
+                      //               name.text.isNotEmpty) {
+                      //             context_bloc.read<BlocComment>().add(
+                      //                 BlocCommentEvent.createComment(MComment(
+                      //                     body: body.text,
+                      //                     email: email.text,
+                      //                     name: name.text,
+                      //                     postId: widget.id
+                      //                 )));
+                      //
+                      //             context_bloc
+                      //                 .read<BlocComment>()
+                      //                 .stream
+                      //                 .listen((event) {
+                      //               event.maybeWhen(
+                      //                   orElse: () {}, fetchedComment: (data) {
+                      //                 Navigator.pop(context);
+                      //                 name.clear();
+                      //                 body.clear();
+                      //                 Utils.toast(widget.parrent,
+                      //                     "Сообщение отправлено успешно");
+                      //               });
+                      //             });
+                      //
+                      //           }
+                      //           else
+                      //             setState((){
+                      //               error = true;
+                      //             });
+                      //         },
+                      //       )
+                      //     ],
+                      //   ),
+                      // ),
+                    ),
+                  )
               ),
             ),
           ),

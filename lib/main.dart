@@ -22,6 +22,7 @@ import 'package:json_test_exercise/presentation/bloc/nav_bottom/cubit_bottom_nav
 import 'package:json_test_exercise/presentation/pages/splash/splash.dart';
 import 'di.dart' as di;
 import 'firebase_options.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,6 +33,10 @@ Future<void> main() async {
     await Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform);
 
+    FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+    FirebaseAnalyticsObserver observer =
+        FirebaseAnalyticsObserver(analytics: analytics);
+
     if (kDebugMode) {
       await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(false);
     } else {
@@ -39,20 +44,14 @@ Future<void> main() async {
       FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
     }
 
-
     SystemChrome.setPreferredOrientations(
             [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown])
-        .then((_) =>  BlocOverrides.runZoned(
-          () => runApp(const MyApp()),
-      blocObserver: AppBlocObserver(),
-    )
-
-    );
+        .then((_) => BlocOverrides.runZoned(
+              () => runApp(const MyApp()),
+              blocObserver: AppBlocObserver(),
+            ));
   }, (error, stack) => FirebaseCrashlytics.instance.recordError(error, stack));
-
-
 }
-
 
 class AppBlocObserver extends BlocObserver {
   @override
@@ -76,14 +75,15 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
         providers: [
           BlocProvider<AuthCubit>(create: (context) => di.sl<AuthCubit>()),
-          BlocProvider<ConnectiveCubit>(create: (context) => di.sl<ConnectiveCubit>()),
-          BlocProvider<CubitBottomNav>(create: (context) => di.sl<CubitBottomNav>()),
+          BlocProvider<ConnectiveCubit>(
+              create: (context) => di.sl<ConnectiveCubit>()),
+          BlocProvider<CubitBottomNav>(
+              create: (context) => di.sl<CubitBottomNav>()),
         ],
         child: MaterialApp(
             theme: themeData(context),
-        title: 'Flutter Test Demo',
-
-        home:  ScreenUtilInit(
+            title: 'Flutter Test Demo',
+            home: ScreenUtilInit(
                 designSize: Size(414, 896),
                 builder: (BuildContext context, Widget? child) => Splash())));
   }
